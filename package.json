@@ -1,0 +1,29 @@
+{
+    "name": "node-js-otp",
+    "version": "1.0.0",
+    "description": "basic OTP service in NodeJS using express",
+    "main": "app.js",
+    "scripts": {
+        "start": "nodemon app.js",
+        "server": "nodemon app.js",
+        "dev": "npm run server"
+    },
+    "author": "Abhishek Pareek",
+    "license": "ISC",
+    "dependencies": {
+        "aws-sdk": "^2.1347.0",
+        "cors": "^2.8.5",
+        "crypto": "^1.0.1",
+        "dotenv": "^10.0.0",
+        "express": "^4.18.2",
+        "helmet": "^4.6.0",
+        "jsonwebtoken": "^9.0.0",
+        "morgan": "^1.10.0",
+        "nodemailer": "^6.9.1",
+        "nodemon": "^2.0.22",
+        "otp-generator": "^4.0.1",
+        "pg": "^8.10.0",
+        "sequelize": "^6.30.0",
+        "sequelize-cli": "^6.6.0"
+    }
+}

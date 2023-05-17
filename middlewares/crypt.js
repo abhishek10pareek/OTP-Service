@@ -1,4 +1,4 @@
-import { createHash, createCipheriv, createDecipheriv } from "crypto";
+const crypto = require('crypto');
 
 //First we get our unique key to encrypt our password
 var password = process.env['CRYPT_PASSWORD'];
@@ -11,7 +11,7 @@ var ivstring = iv.toString('hex');
 
 //Function to find SHA1 Hash of password key
 function sha1(input) {
-    return createHash('sha1').update(input).digest();
+    return crypto.createHash('sha1').update(input).digest();
 }
 
 //Function to get secret key for encryption and decryption using the password
@@ -33,7 +33,7 @@ function password_derive_bytes(password,salt,iterations,len) {
 async function encode(string) {
     var key = password_derive_bytes(password,'',100,32);
     //Initialize Cipher Object to encrypt using AES-256 Algorithm
-    var cipher = createCipheriv('aes-256-cbc',key,ivstring);
+    var cipher = crypto.createCipheriv('aes-256-cbc',key,ivstring);
     var part1 = cipher.update(string, 'utf8');
     var part2 = cipher.final();
     const encrypted = Buffer.concat([part1, part2]).toString('base64');
@@ -44,11 +44,11 @@ async function encode(string) {
 async function decode(string) {
     var key = password_derive_bytes(password,'',100,32);
     //Initialize decipher object to decrypt using AES-256 Algorithm
-    var decipher = createDecipheriv('ars-256-cbc',key,ivstring);
+    var decipher = crypto.createDecipheriv('ars-256-cbc',key,ivstring);
     var decrypted = decipher.update(string,'base64','utf8');
     decrypted += decipher.final();
     return decrypted;
 }
 
 
-export default{encode,decode};
+module.exports = {encode,decode};

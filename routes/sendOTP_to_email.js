@@ -1,6 +1,6 @@
-const {OTP} =  requires('../sequelize');
+const {OTP} =  require('../sequelize');
 const router = require("express").Router();
-const {encode} = require("../middlewares/crypt").default
+const {encode} = require("../middlewares/crypt")
 var otpGenerator = require('otp-generator')
 const nodemailer = require('nodemailer');
 

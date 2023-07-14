@@ -15,13 +15,13 @@ function sha1(input) {
 }
 
 //Function to get secret key for encryption and decryption using the password
-function password_derive_bytes(password,salt,iterations,len) {
+function password_derive_bytes(password, salt, iterations, len) {
     var key = Buffer.from(password + salt);
     for(var i=0;i<iterations;i++) {
         key = sha1(key);
     }
     if(key.length<len) {
-        var hx = password_derive_bytes(password,salt,iterations-1,20);
+        var hx = password_derive_bytes(password, salt, iterations-1, 20);
         for(var counter = 1 ; key.length<len ; ++counter) {
             key = Buffer.concat([key, sha1(Buffer.concat([Buffer.from(counter.toString()), hx]))]);
         }
@@ -44,11 +44,11 @@ async function encode(string) {
 async function decode(string) {
     var key = password_derive_bytes(password,'',100,32);
     //Initialize decipher object to decrypt using AES-256 Algorithm
-    var decipher = crypto.createDecipheriv('ars-256-cbc',key,ivstring);
+    var decipher = crypto.createDecipheriv('aes-256-cbc',key,ivstring);
     var decrypted = decipher.update(string,'base64','utf8');
     decrypted += decipher.final();
     return decrypted;
 }
 
 
-module.exports = {encode,decode};
+module.exports = {encode, decode};

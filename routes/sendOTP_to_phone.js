@@ -1,8 +1,9 @@
 const {OTP} = require('../sequelize');
 const router = require("express").Router();
-const {encode,decode} = require("../middlewares/crypt").default
+const {encode,decode} = require("../middlewares/crypt")
 var otpGenerator = require("otp-generator");
 var AWS = require('aws-sdk');
+require('aws-sdk/lib/maintenance_mode_message').suppress = true;
 const crypto = require('crypto');
 
 //To add minutes to the current time
@@ -14,6 +15,11 @@ router.post('/otp/phone', async(req,res,next) => {
     
     try{
 
+        if(!process.env.AWS_ACCESS_KEY_ID || !process.env.AWS_SECRET_ACCESS_KEY){
+            const response={"Status":"Failure","Details":"OTP for phone is not available right now"}
+            return res.status(503).send(response) 
+          }
+        
         const {phone_number,type} = req.body;
 
         let phone_message
@@ -81,7 +87,7 @@ router.post('/otp/phone', async(req,res,next) => {
         var publishTextPromise = new AWS.SNS({apiVersion:'2010-03-31'}).publish(params).promise();
     
         //Send response back to client if the message is sent
-        publish.then(
+        publishTextPromise.then(
             function(data) {
                 return res.send({"Status":"Success","Details":encoded});
             }).catch(

@@ -97,7 +97,7 @@ router.post('/verify/otp', async(req,res,next) => {
                     if(otp===otp_instance.otp) {
                         //Mark OTP as verified or used
                         otp_instance.verified=true
-                        otp_instance.save()
+                        otp_instance.save();
 
                         const response={"Status":"Success","Details":"OTP Matched","Check": check}
                         return res.status(200).send(response);

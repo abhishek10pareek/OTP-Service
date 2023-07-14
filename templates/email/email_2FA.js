@@ -1,4 +1,4 @@
-const subject_mail = "OTP: For Reset Password"
+const subject_mail = "OTP: For Login"
 
 const message = (otp) => {
     return `Dear User, \n\n`
